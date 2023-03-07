@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import '../styles/ControlSalary.sass';
 import { Form, Alert } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Field, formValueSelector, reduxForm } from 'redux-form';
@@ -11,6 +12,7 @@ const ControlSalary: React.FC = () => {
   //const connectedControlSalary = useSelector(mapStateToProps);
   return (
     <Form onSubmit={() => {}}>
+      <Form.Label className='main-label'>Сумма</Form.Label>
       <Field name='radio-button-list' component={PayTypeRadioGroup} />
       <Field name='isNDFL-switcher' component={NDFLSwitcher} />
       <Field name='money-input' component={MoneyInput} />
