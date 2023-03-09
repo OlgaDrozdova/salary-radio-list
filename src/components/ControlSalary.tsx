@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import React from 'react';
 import '../styles/ControlSalary.sass';
 import { Form, Alert } from 'react-bootstrap';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import {
   Field,
   formValueSelector,
@@ -12,10 +12,6 @@ import MoneyInput from './MoneyInput';
 import NDFLSwitcher from './NDFLSwitcher';
 import PayTypeRadioGroup from './PayTypeRadioGroup';
 import { PayType } from '../helpers/common';
-
-// interface ISalary {
-//   salaryType: string;
-// }
 
 interface FormData {
   salaryType?: string;
@@ -35,9 +31,6 @@ const ControlSalary: React.FC<InjectedFormProps & FormData> = ({
   isNDFL,
   moneyInput,
 }) => {
-  //const { handleSubmit, salaryType } = props;
-
-  //console.log(props);
 
   const isMROT = salaryType === PayType.MROT;
   const isMonthly = salaryType === PayType.PAY_MONTHLY;
@@ -80,7 +73,7 @@ const ControlSalaryForm = reduxForm<FormData>({
 const selector = formValueSelector('salary');
 
 const mapStateToProps = (state: any): FormData => {
-  return selector(state, 'salaryType');
+  return selector(state, 'salaryType', 'isNDFL', 'moneyInput');
 };
 
 const connectedControlSalary =

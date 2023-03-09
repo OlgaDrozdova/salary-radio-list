@@ -1,0 +1,24 @@
+@import './common'
+
+.tooltip-icon
+    color: $second-text
+
+.tooltip
+    &.show
+        opacity: 1 !important
+        padding-top: 1.3rem
+
+.tooltip-inner
+    background-color: $tooltip
+    font-weight: 700
+    border-radius: 0 !important
+    padding: 1rem
+    text-align: left
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before
+    border-bottom-color: $tooltip !important
+    border-top: 0 !important
+    border-left: 0 !important
+    margin-left: 0.3rem
+    border-width: 1rem
+    bottom: -1rem
