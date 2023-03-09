@@ -4,3 +4,4 @@ export enum PayType {
     PAY_DAILY = 'Оплата за день',
     PAY_HOUR = 'Оплата за час'
 };
+
