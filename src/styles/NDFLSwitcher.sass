@@ -5,6 +5,13 @@
     background-color: $active-switch-color
     border-color: $active-switch-color
 
-.ndfl-label
+.ndfl-label__on,
+.ndfl-label__off
   font-weight: 700
   font-size: 0.8rem
+  color: $second-text
+  &.active
+    color: $primary-text
+
+.tooltip-icon
+  cursor: pointer

@@ -1,14 +1,25 @@
 import React, { ChangeEvent } from 'react';
+import '../styles/MoneyInput.sass';
 import { Col, Form, Row } from 'react-bootstrap';
-import { WrappedFieldProps } from 'redux-form';
+import { connect } from 'react-redux';
+import { formValueSelector, WrappedFieldProps } from 'redux-form';
+import { MoneyInputLabel, PayType } from '../helpers/common';
+import { numberWithSpaces } from '../helpers/numberWithSpaces';
+import { numberWithoutSpaces } from '../helpers/numberWithoutSpaces';
 
-const MoneyInput: React.FC<WrappedFieldProps> = (props) => {
+interface IMoneyInput {
+  salaryType: PayType;
+}
+const MoneyInput: React.FC<WrappedFieldProps & IMoneyInput> = (props) => {
   const {
     input: { value, onChange },
+    salaryType,
   } = props;
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event?.target.value);
+    if (event) {
+      onChange(numberWithoutSpaces(event?.target.value));
+    }
   };
 
   return (
@@ -17,15 +28,26 @@ const MoneyInput: React.FC<WrappedFieldProps> = (props) => {
         <Form.Control
           type='text'
           maxLength={10}
-          value={value}
+          value={numberWithSpaces(value)}
           onChange={handleChangeInput}
+          className='money-input'
+          pattern='\d*'
+          placeholder='0'
         />
       </Col>
       <Col>
-        <Form.Label>₽</Form.Label>
+        <Form.Label className='money-input__label mt-1'>
+          {MoneyInputLabel[salaryType]}
+        </Form.Label>
       </Col>
     </Form.Group>
   );
 };
 
-export default MoneyInput;
+const selector = formValueSelector('salary');
+const connectedMoneyInput = connect((state: any) => {
+  return {
+    salaryType: selector(state, 'salaryType'),
+  };
+})(MoneyInput);
+export default connectedMoneyInput;

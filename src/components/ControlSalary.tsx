@@ -11,7 +11,8 @@ import {
 import MoneyInput from './MoneyInput';
 import NDFLSwitcher from './NDFLSwitcher';
 import PayTypeRadioGroup from './PayTypeRadioGroup';
-import { PayType } from '../helpers/common';
+import { ndfl, PayType } from '../helpers/common';
+import { numberWithSpaces } from '../helpers/numberWithSpaces';
 
 interface FormData {
   salaryType?: string;
@@ -22,7 +23,7 @@ interface FormData {
 const testData = {
   salaryType: PayType.PAY_MONTHLY,
   isNDFL: true,
-  moneyInput: 0,
+  moneyInput: 40000,
 };
 
 const ControlSalary: React.FC<InjectedFormProps & FormData> = ({
@@ -31,30 +32,36 @@ const ControlSalary: React.FC<InjectedFormProps & FormData> = ({
   isNDFL,
   moneyInput,
 }) => {
-
   const isMROT = salaryType === PayType.MROT;
   const isMonthly = salaryType === PayType.PAY_MONTHLY;
+  const tax = 1 - ndfl / 100;
+  const salaryFact =
+    moneyInput && Math.round(isNDFL ? moneyInput : moneyInput * tax);
+  const salaryCommon =
+    moneyInput && Math.round(isNDFL ? moneyInput / tax : moneyInput);
+  const ndflValue = salaryCommon && salaryFact && salaryCommon - salaryFact;
 
-  console.log(salaryType, isMROT);
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Label className='main-label'>Сумма</Form.Label>
       <Field name='salaryType' component={PayTypeRadioGroup} />
       {!isMROT && (
         <>
-          <Field name='isNDFL-switcher' component={NDFLSwitcher} />
-          <Field name='money-input' component={MoneyInput} />
+          <Field name='isNDFL' component={NDFLSwitcher} />
+          <Field name='moneyInput' component={MoneyInput} />
           {isMonthly && (
             <Alert variant='warning' className='mt-4 p-4 col-4'>
               <>
                 <p>
-                  <b>1000 ₽</b> сотрудник будет получать на руки
+                  <b>{numberWithSpaces(salaryFact)} ₽</b> сотрудник будет
+                  получать на руки
                 </p>
                 <p>
-                  <b>10000 ₽</b> НДФЛ, 13% от оклада
+                  <b>{numberWithSpaces(ndflValue)} ₽</b> НДФЛ, 13% от оклада
                 </p>
                 <p>
-                  <b>100500 ₽</b> за сотрудника в месяц
+                  <b>{numberWithSpaces(salaryCommon)} ₽</b> за сотрудника в
+                  месяц
                 </p>
               </>
             </Alert>

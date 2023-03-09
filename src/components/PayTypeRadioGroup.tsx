@@ -11,7 +11,9 @@ const PayTypeRadioGroup: React.FC<WrappedFieldProps> = (props) => {
   } = props;
 
   const handleChangeSalaryType = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event?.target.value);
+    if (event) {
+      onChange(event.target.value);
+    }
   };
 
   return (
